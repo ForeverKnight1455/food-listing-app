@@ -37,18 +37,21 @@ const Createpage = () => {
                 type='text' 
                 className='bg-white text-black focus:border-2 rounded-2xl w-9/12 h-10 p-5' 
                 placeholder="name" 
+                value={food.name}
                 onChange={(e)=> setFood({...food,name: e.target.value})}
                 />
             <input 
                 type='text' 
                 className='bg-white text-black focus:border-2 rounded-2xl w-9/12 h-10 p-5' 
-                placeholder="price" 
+                placeholder="price"
+                value={food.price} 
                 onChange={(e)=> setFood({...food,price: Number(e.target.value)})}
                 />
             <input 
                 type='text' 
                 className='bg-white text-black focus:border-2 rounded-2xl w-9/12 h-10 p-5' 
                 placeholder="image url"
+                value={food.image}
                 onChange={(e)=>setFood({...food,image: e.target.value})}
             />
             <input type='button' className='btn' value="add" onClick={()=>{handleAddFood()}} />
