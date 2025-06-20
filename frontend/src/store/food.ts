@@ -1,7 +1,7 @@
 import {create} from "zustand";
 //creating a new hook for managing the foods
 type Food = {
-    id: string;
+    _id: string;
     name: string;
     price: number;
     image: string;
@@ -13,7 +13,7 @@ type FoodStore = {
   createFood: (newFood: Food) => Promise<{ success: boolean; message: string }>;
   fetchFood: () => Promise<void>;
   deleteFood: (id: string) => Promise<{ success: boolean; message: string }>;
-  editFood: (id: string,food: Food) => Promise<{ success: boolean; message: string }>;
+  editFood: (food: Food) => Promise<{ success: boolean; message: string }>;
 };
 
 export const useFoodStore = create<FoodStore>((set)=>({
@@ -55,12 +55,12 @@ export const useFoodStore = create<FoodStore>((set)=>({
             return {success: false, message: data.message}
         }
 
-        set((state:any) => ({foods: state.foods.filter((food:Food) => food.id !== id)})) 
+        set((state:any) => ({foods: state.foods.filter((food:Food) => food._id !== id)})) 
 
         return {success: true,message:data.message};
     },
-    editFood: async(id:string,updatedFood:Food) =>{
-        const res = await fetch(`/api/products/${id}`, {
+    editFood: async(updatedFood:Food) =>{
+        const res = await fetch(`/api/products/${updatedFood._id}`, {
             method: "PATCH",
             headers: {
             "content-type": "application/json"
@@ -76,7 +76,7 @@ export const useFoodStore = create<FoodStore>((set)=>({
 
         set((state: any) => ({
             foods: state.foods.map((food: Food) =>
-            food.id === updatedFood.id ? updatedFood : food
+            food._id === updatedFood._id ? updatedFood : food
             )
         }));
 

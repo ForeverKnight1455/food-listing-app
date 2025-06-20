@@ -1,24 +1,31 @@
 import { useFoodStore } from '../store/food';
 import { useState } from 'react';
 import Toast from '../components/Toast';
+type Food = {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+};
 type FoodStore = {
-    createFood: (food: { name: string; price: string; image: string }) => Promise<[any, any]>;
+    createFood: (food:Food) => Promise<{success:boolean,message:string}>;
 };
 
 const Createpage = () => {
     const [food,setFood] = useState({
+        id:"",
         name:"",
-        price:"",
+        price:0,
         image:""
     });
 
     const { createFood } = useFoodStore() as FoodStore;
     const [showToast,setShowtoast] = useState({show:false,message:""});
     async function handleAddFood(){
-        const [success, message] = await createFood(food);
+        const {success, message} = await createFood(food);
         if(success){
             setShowtoast({show:true,message:message});
-            setFood({name:"",price:"",image:""})
+            setFood({id:"",name:"",price:0,image:""})
         }
     }
 
@@ -36,18 +43,21 @@ const Createpage = () => {
                 type='text' 
                 className='bg-white text-black focus:border-2 rounded-2xl w-9/12 h-10 p-5' 
                 placeholder="price" 
-                onChange={(e)=> setFood({...food,price: e.target.value})}
+                onChange={(e)=> setFood({...food,price: Number(e.target.value)})}
                 />
             <input 
                 type='text' 
                 className='bg-white text-black focus:border-2 rounded-2xl w-9/12 h-10 p-5' 
-                placeholder="image url" 
+                placeholder="image url"
                 onChange={(e)=>setFood({...food,image: e.target.value})}
             />
-            <input type='button' className='btn' value="add" onClick={handleAddFood} />
+            <input type='button' className='btn' value="add" onClick={()=>{handleAddFood()}} />
         </div>
-        <Toast message={showToast.message} show={showToast.show} 
-        onClose={()=> setShowtoast({show:false,message:""})}/>
+        <Toast 
+            message={showToast.message} 
+            show={showToast.show} 
+            onClose={()=> setShowtoast({show:false,message:""})}
+        />
     </>
   )
 }

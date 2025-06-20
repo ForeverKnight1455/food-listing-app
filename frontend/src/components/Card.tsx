@@ -1,52 +1,51 @@
 import { useFoodStore } from "../store/food";
 import {useState} from "react";
-type CardProps = {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-};
 
-type Food = { id: string;name: string; price: number; image: string };
+type Food = { _id: string;name: string; price: number; image: string };
 
 type foodstore = {
     foods: Food[];
     deleteFood(id:string): Promise<{success:boolean,message:string}>; 
-    editFood(_id:string,{id,name,price,image}:CardProps): Promise<{success:boolean,message:string}>;
+    editFood({_id,name,price,image}:Food): Promise<{success:boolean,message:string}>;
 }
 
-function Card(food:CardProps){
-    const [updatedFood,setUpdatedFood] = useState(food);
+function Card({_id,name,price,image}:Food){
+    const [updatedFood, setUpdatedFood] = useState({
+        _id,
+        name,
+        price,
+        image
+    });
     
     const { deleteFood,editFood } = useFoodStore() as foodstore;
 
-    const handleDeleteFood = async (id) => {
+    const handleDeleteFood = async (id:any) => {
         const { success,message } = await deleteFood(id);
         if(!success){
-            alert("failed to delete, "+message)
+            alert("failed to delete, " + message)
         }   
     }
-    const handleEditFood = async ({id,name,price,image}:CardProps) =>{
-        const { success, message } = await editFood(id,{id,name,price,image});
+    const handleEditFood = async ({_id,name,price,image}:Food) =>{
+        const { success, message } = await editFood({_id,name,price,image});
         if(!success){
-            alert("updation failed "+message);
+            alert("updation failed " + message);
         } 
         else{
-            alert("updation successful "+message);
+            alert("updation successful " + message);
         }
     } 
     return(
         <>
         <div className="bg-base-100 w-96 shadow-sm border-2">
             <figure>
-                <img src={food.image} alt={food.name} />
+                <img src={image} alt={name} />
             </figure>
             <div className="card-body">
-                <h2 className="card-title">{food.name}</h2>
-                <p>{food.price}</p>
+                <h2 className="card-title">{name}</h2>
+                <p>{price}</p>
                 <div className="card-actions justify-end">
-                    <button className="btn btn-secondary" onClick={()=>document.getElementById('edit_panel')?.showModal()}>edit</button>
-                        <dialog id="edit_panel" className="modal">
+                    <button className="btn btn-secondary" onClick={()=>document.getElementById(`edit_panel_${_id}`)?.showModal()}>edit</button>
+                        <dialog id={`edit_panel_${_id}`} className="modal">
                         <div className="modal-box">
                             <h3 className="font-bold text-lg">Update</h3>
                             <p className="py-4">Press ESC key to go back</p>
@@ -82,7 +81,7 @@ function Card(food:CardProps){
                             </div>
                         </div>
                         </dialog>
-                    <button className="btn btn-primary" onClick={()=>handleDeleteFood(food.id)}>delete</button>
+                    <button className="btn btn-primary" onClick={()=>handleDeleteFood(_id)}>delete</button>
                 </div>
             </div>
         </div>

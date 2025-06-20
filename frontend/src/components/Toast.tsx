@@ -1,4 +1,10 @@
-function Toast({message,show,onClose}){
+type toast = {
+    message: string;
+    show: boolean;
+    onClose:() => void;
+}
+
+function Toast({message,show,onClose}:toast){
     if (!show) return null
     return(
     <>
