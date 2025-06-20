@@ -17,7 +17,8 @@ const Createpage = () => {
     async function handleAddFood(){
         const [success, message] = await createFood(food);
         if(success){
-            setShowtoast({show:true,message:message})
+            setShowtoast({show:true,message:message});
+            setFood({name:"",price:"",image:""})
         }
     }
 

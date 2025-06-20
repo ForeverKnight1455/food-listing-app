@@ -1,21 +1,91 @@
-function Card({name,price,image}){
-    if(!name || !price || !image) return null;
+import { useFoodStore } from "../store/food";
+import {useState} from "react";
+type CardProps = {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+};
+
+type Food = { id: string;name: string; price: number; image: string };
+
+type foodstore = {
+    foods: Food[];
+    deleteFood(id:string): Promise<{success:boolean,message:string}>; 
+    editFood(_id:string,{id,name,price,image}:CardProps): Promise<{success:boolean,message:string}>;
+}
+
+function Card(food:CardProps){
+    const [updatedFood,setUpdatedFood] = useState(food);
+    
+    const { deleteFood,editFood } = useFoodStore() as foodstore;
+
+    const handleDeleteFood = async (id) => {
+        const { success,message } = await deleteFood(id);
+        if(!success){
+            alert("failed to delete, "+message)
+        }   
+    }
+    const handleEditFood = async ({id,name,price,image}:CardProps) =>{
+        const { success, message } = await editFood(id,{id,name,price,image});
+        if(!success){
+            alert("updation failed "+message);
+        } 
+        else{
+            alert("updation successful "+message);
+        }
+    } 
     return(
         <>
-            <div className="card bg-base-100 w-96 shadow-sm border-2">
-                <figure>
-                    <img
-                    src={image}
-                    alt={name} />
-                </figure>
-                <div className="card-body">
-                    <h2 className="card-title">{name}</h2>
-                    <p>{name}</p>
-                    <div className="card-actions justify-end">
-                        <button className="btn btn-primary">delete</button>
-                    </div>
+        <div className="bg-base-100 w-96 shadow-sm border-2">
+            <figure>
+                <img src={food.image} alt={food.name} />
+            </figure>
+            <div className="card-body">
+                <h2 className="card-title">{food.name}</h2>
+                <p>{food.price}</p>
+                <div className="card-actions justify-end">
+                    <button className="btn btn-secondary" onClick={()=>document.getElementById('edit_panel')?.showModal()}>edit</button>
+                        <dialog id="edit_panel" className="modal">
+                        <div className="modal-box">
+                            <h3 className="font-bold text-lg">Update</h3>
+                            <p className="py-4">Press ESC key to go back</p>
+                            <form className="flex flex-col gap-2">
+                                <input
+                                    type="text"
+                                    placeholder="name"
+                                    className="p-3"
+                                    value={updatedFood.name}
+                                    onChange={e => setUpdatedFood(prev => ({ ...prev, name: e.target.value }))}
+                                />
+                                <input
+                                    type="number"
+                                    placeholder="price"
+                                    className="p-3"
+                                    value={updatedFood.price}
+                                    onChange={e => setUpdatedFood(prev => ({ ...prev, price: Number(e.target.value) }))}
+                                />
+                                <input
+                                    type="text"
+                                    placeholder="image url"
+                                    className="p-3"
+                                    value={updatedFood.image}
+                                    onChange={e => setUpdatedFood(prev => ({ ...prev, image: e.target.value }))}
+                                />
+                            </form>
+                            <div className="modal-action">
+                            <form method="dialog">
+                                {/* if there is a button in form, it will close the modal */}
+                                <input type="button" value="ok" className="btn btn-accent self-center" onClick={()=>{handleEditFood(updatedFood)}}/>
+                                <button className="btn">Close</button>
+                            </form>
+                            </div>
+                        </div>
+                        </dialog>
+                    <button className="btn btn-primary" onClick={()=>handleDeleteFood(food.id)}>delete</button>
                 </div>
             </div>
+        </div>
         </>
     );
 }
