@@ -11,7 +11,7 @@ type FoodStore = {
   foods: Food[];
   setFood: (food: Food) => void;
   createFood: (newFood: Food) => Promise<{ success: boolean; message: string }>;
-  fetchFood: () => Promise<void>;
+  fetchFood: () => Promise<{success:boolean,message:string,length:number}>;
   deleteFood: (id: string) => Promise<{ success: boolean; message: string }>;
   editFood: (food: Food) => Promise<{ success: boolean; message: string }>;
 };
@@ -41,9 +41,15 @@ export const useFoodStore = create<FoodStore>((set)=>({
         return { success:true,message:"food added sucessfully"}
     },
     fetchFood: async () => {
-        const res = await fetch('/api/products');
-        const data = await res.json();
-        set({foods: data.data});
+        try{
+            const res = await fetch('/api/products');
+            const data = await res.json();
+            set({foods: data.data});
+            return { success:true, message:"fetched data",length: data.data.length}
+        }
+        catch(err){
+            return { success:false, message:"couldn't fetch data"}
+        }
     },
     deleteFood: async(id:any) => {
         const res = await fetch(`/api/products/${id}`,{

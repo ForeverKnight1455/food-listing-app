@@ -17,6 +17,7 @@ function Navbar(){
                 <div className="flex flex-row justify-center items-center gap-3.5">
                     <Link to='/create' className="btn hover:bg-green-700">+</Link>
                     <button className="btn hover:bg-blue-500" onClick={toggleTheme}><CgYinyang /></button>
+                    <input type="checkbox" value="synthwave" className="toggle theme-controller" />
                 </div>
             </div>
         </>
