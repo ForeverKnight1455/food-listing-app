@@ -1,31 +1,22 @@
 import { useFoodStore } from '../store/food';
 import { useState } from 'react';
 import Toast from '../components/Toast';
-type Food = {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-};
-type FoodStore = {
-    createFood: (food:Food) => Promise<{success:boolean,message:string}>;
-};
 
 const Createpage = () => {
     const [food,setFood] = useState({
-        id:"",
+        _id:"",
         name:"",
         price:0,
         image:""
     });
 
-    const { createFood } = useFoodStore() as FoodStore;
+    const { createFood } = useFoodStore();
     const [showToast,setShowtoast] = useState({show:false,message:""});
     async function handleAddFood(){
         const {success, message} = await createFood(food);
         if(success){
             setShowtoast({show:true,message:message});
-            setFood({id:"",name:"",price:0,image:""})
+            setFood({_id:"",name:"",price:0,image:""})
         }
     }
 

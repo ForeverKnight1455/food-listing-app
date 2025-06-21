@@ -38,13 +38,19 @@ function Card({_id,name,price,image}:Food){
         <>
         <div className="bg-base-100 w-96 shadow-sm border-2">
             <figure>
-                <img src={image} alt={name} />
+                <img src={image} alt={name} className=""/>
             </figure>
             <div className="card-body">
                 <h2 className="card-title">{name}</h2>
                 <p>{price}</p>
                 <div className="card-actions justify-end">
-                    <button className="btn btn-secondary" onClick={()=>document.getElementById(`edit_panel_${_id}`)?.showModal()}>edit</button>
+                    <button
+                        className="btn btn-secondary"
+                        onClick={() => {
+                            const dialog = document.getElementById(`edit_panel_${_id}`) as HTMLDialogElement | null;
+                            dialog?.showModal();
+                        }}
+                    >edit</button>
                         <dialog id={`edit_panel_${_id}`} className="modal">
                         <div className="modal-box">
                             <h3 className="font-bold text-lg">Update</h3>
@@ -75,7 +81,7 @@ function Card({_id,name,price,image}:Food){
                             <div className="modal-action">
                             <form method="dialog">
                                 {/* if there is a button in form, it will close the modal */}
-                                <input type="button" value="ok" className="btn btn-accent self-center" onClick={()=>{handleEditFood(updatedFood)}}/>
+                                <input type="button" value="ok" className="btn btn-accent self-center" onClick={()=>{handleEditFood(updatedFood)}}/>    
                                 <button className="btn">Close</button>
                             </form>
                             </div>

@@ -48,7 +48,7 @@ export const useFoodStore = create<FoodStore>((set)=>({
             return { success:true, message:"fetched data",length: data.data.length}
         }
         catch(err){
-            return { success:false, message:"couldn't fetch data"}
+            return { success:false, message:"couldn't fetch data", length: 0}
         }
     },
     deleteFood: async(id:any) => {
@@ -62,7 +62,7 @@ export const useFoodStore = create<FoodStore>((set)=>({
         }
 
         set((state:any) => ({foods: state.foods.filter((food:Food) => food._id !== id)})) 
-
+        
         return {success: true,message:data.message};
     },
     editFood: async(updatedFood:Food) =>{
