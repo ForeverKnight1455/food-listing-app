@@ -3,5 +3,30 @@
     "@chakra-ui/react": "^3.21.0",
     "@emotion/react": "^11.14.0",
     "zustand": "^5.0.5"
+  },
+  "name": "food-listing-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "cross-env NODE_ENV=production node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForeverKnight1455/food-listing-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ForeverKnight1455/food-listing-app/issues"
+  },
+  "homepage": "https://github.com/ForeverKnight1455/food-listing-app#readme",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3"
   }
 }

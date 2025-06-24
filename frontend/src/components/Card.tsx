@@ -36,9 +36,9 @@ function Card({_id,name,price,image}:Food){
     } 
     return(
         <>
-        <div className="bg-base-100 w-96 shadow-sm border-2">
+        <div className="bg-base-100 w-96 shadow-sm border-2 rounded-3xl">
             <figure>
-                <img src={image} alt={name} className=""/>
+                <img src={image} alt={name} className="object-cover h-100 w-100 rounded-3xl"/>
             </figure>
             <div className="card-body">
                 <h2 className="card-title">{name}</h2>

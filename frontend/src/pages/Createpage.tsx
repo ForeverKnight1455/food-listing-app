@@ -4,7 +4,6 @@ import Toast from '../components/Toast';
 
 const Createpage = () => {
     const [food,setFood] = useState({
-        _id:"",
         name:"",
         price:0,
         image:""
@@ -16,7 +15,7 @@ const Createpage = () => {
         const {success, message} = await createFood(food);
         if(success){
             setShowtoast({show:true,message:message});
-            setFood({_id:"",name:"",price:0,image:""})
+            setFood({name:"",price:0,image:""})
         }
     }
 

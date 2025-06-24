@@ -1,7 +1,7 @@
 import {create} from "zustand";
 //creating a new hook for managing the foods
 type Food = {
-    _id: string;
+    _id?: string;
     name: string;
     price: number;
     image: string;
@@ -34,11 +34,11 @@ export const useFoodStore = create<FoodStore>((set)=>({
                 "content-type":"application/json"
             },
             body:JSON.stringify(newfood)
-        }) 
+        });
 
         const data = await res.json();
         set((state:any) => ({foods: [...state.foods, data.data]}))
-        return { success:true,message:"food added sucessfully"}
+        return { success:true,message:"food added successfully"}
     },
     fetchFood: async () => {
         try{
