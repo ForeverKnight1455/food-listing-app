@@ -17,15 +17,10 @@ if(process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
-else {
-  app.get("/", (req, res) => {
-    res.send("API is running...");
-  });
-}
 console.log("Server is running in", process.env.NODE_ENV, "mode");
 
 app.listen(process.env.PORT, () => {
   dbconnect();
   console.log(`Server is running on port ${process.env.PORT}`); 
-    console.log(`http://localhost:${process.env.PORT}`);
+ console.log(`http://localhost:${process.env.PORT}`);
 });

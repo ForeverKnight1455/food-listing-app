@@ -6,6 +6,7 @@ export const dbconnect = async () => {
   const mongourl = process.env.MONGO_URI;
   if (!mongourl) {
     console.error('MONGO_URI is not defined in environment variables');
+    console.log("Please set the MONGO_URI in your .env file");
     return;
   }
 
