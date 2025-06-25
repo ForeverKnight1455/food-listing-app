@@ -4,15 +4,16 @@ import productrouter from './route/product.route.js';
 import dotenv from 'dotenv';
 dotenv.config()
 import path from "path"
+
 const app = express();
 app.use(express.json());
-const __dirname = path.resolve()
+const __dirname = path.resolve()//return the project directory path 
 app.use('/api/products', productrouter);
 
 if(process.env.NODE_ENV === "production"){
-  app.use(express.static(path.resolve(__dirname, "frontend", "dist")));
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
 

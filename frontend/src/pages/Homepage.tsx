@@ -1,5 +1,5 @@
 import '../App.css'
-import {useEffect,useState} from 'react'
+import {useEffect,useRef,useState} from 'react'
 import Toast from '../components/Toast'
 import  { useFoodStore } from '../store/food'
 import Card from '../components/Card'
@@ -20,6 +20,7 @@ type FoodStore = {
 const Homepage = () => {
   const [empty,setEmpty] =useState<boolean>(true);
   const {fetchFood,foods} = useFoodStore() as FoodStore;
+  const isEmpty = useRef<boolean>(true);
   const [showToast,setShowtoast] = useState({show:false,message:""});
   useEffect(() => {
     const fetchData = async () => {
@@ -32,14 +33,16 @@ const Homepage = () => {
         setShowtoast({ show: true, message: "Data fetched successfully" });
       }
       if (success && length > 0) {
-        setEmpty(false);
+        isEmpty.current = false;
       } else {
-        setEmpty(true);
+        isEmpty.current = true;
       }
     };
     fetchData();
   }, [fetchFood]);
-
+  useEffect(() => {
+    setEmpty(isEmpty.current);
+  }, [foods]);
   return (
     <>
       <div className='p-10 bg-grey border-2 rounded-xl flex-wrap flex gap-2 h-11/12 w-full justify-center items-center overflow-auto'>
@@ -48,7 +51,7 @@ const Homepage = () => {
           <Card key={index} _id={food._id} name={food.name} price={food.price} image={food.image} />
         ))}
       </div>
-      <Toast 
+      <Toast
             message={showToast.message} 
             show={showToast.show} 
             onClose={()=> setShowtoast({show:false,message:""})}
