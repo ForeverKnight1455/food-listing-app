@@ -6,12 +6,16 @@ type toast = {
 
 function Toast({message,show,onClose}:toast){
     if (!show) return null
+
+    setTimeout(() => {
+        onClose();
+    }, 2000);
+    
     return(
     <>
         <div className="toast toast-bottom toast-end">
             <div className="alert alert-success">
                 <span>{message}</span>
-                <button className="btn btn-sm btn-ghost" onClick={onClose}>X</button>
             </div>
         </div>
     </>

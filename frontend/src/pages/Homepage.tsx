@@ -1,5 +1,6 @@
 import '../App.css'
-import {useEffect,useState,useRef} from 'react'
+import {useEffect,useState} from 'react'
+import Toast from '../components/Toast'
 import  { useFoodStore } from '../store/food'
 import Card from '../components/Card'
 
@@ -19,9 +20,17 @@ type FoodStore = {
 const Homepage = () => {
   const [empty,setEmpty] =useState<boolean>(true);
   const {fetchFood,foods} = useFoodStore() as FoodStore;
+  const [showToast,setShowtoast] = useState({show:false,message:""});
   useEffect(() => {
     const fetchData = async () => {
       const { success, length } = await fetchFood();
+      if (!success) {
+        setShowtoast({ show: true, message: "Failed to fetch data" });
+        return;
+      }
+      else{
+        setShowtoast({ show: true, message: "Data fetched successfully" });
+      }
       if (success && length > 0) {
         setEmpty(false);
       } else {
@@ -29,16 +38,21 @@ const Homepage = () => {
       }
     };
     fetchData();
-  }, [fetchFood,foods]);
+  }, [fetchFood]);
 
   return (
     <>
-      <div className='p-10 bg-grey border-2 rounded-xl flex-wrap flex gap-2 h-11/12 w-full justify-center items-center'>
+      <div className='p-10 bg-grey border-2 rounded-xl flex-wrap flex gap-2 h-11/12 w-full justify-center items-center overflow-auto'>
         {<h1 className='font-bold '>{ empty ? "No products available" : "" }</h1>}
         {foods.map((food: Food,index) => (
           <Card key={index} _id={food._id} name={food.name} price={food.price} image={food.image} />
         ))}
       </div>
+      <Toast 
+            message={showToast.message} 
+            show={showToast.show} 
+            onClose={()=> setShowtoast({show:false,message:""})}
+        />
     </> 
   )
 }

@@ -1,5 +1,6 @@
 import { useFoodStore } from "../store/food";
 import {useState} from "react";
+import Toast from "./Toast";
 
 type Food = { _id: string;name: string; price: number; image: string };
 
@@ -18,20 +19,26 @@ function Card({_id,name,price,image}:Food){
     });
     
     const { deleteFood,editFood } = useFoodStore() as foodstore;
-
+    const [showToast,setShowtoast] = useState({show:false,message:""});
     const handleDeleteFood = async (id:any) => {
-        const { success,message } = await deleteFood(id);
+        const { success } = await deleteFood(id);
         if(!success){
-            alert("failed to delete, " + message)
+            // alert("failed to delete, " + message)
+            setShowtoast({show:true,message:"failed to delete"});
         }   
+        else{
+            setShowtoast({show:true,message:"deleted successfully"});
+        }
     }
     const handleEditFood = async ({_id,name,price,image}:Food) =>{
-        const { success, message } = await editFood({_id,name,price,image});
+        const { success } = await editFood({_id,name,price,image});
         if(!success){
-            alert("updation failed " + message);
+            // alert("updation failed " + message);
+            setShowtoast({show:true,message:"updation failed"});
         } 
         else{
-            alert("updation successful " + message);
+            // alert("updation successful " + message);
+            setShowtoast({show:true,message:"updated successfully"});
         }
     } 
     return(
@@ -88,6 +95,11 @@ function Card({_id,name,price,image}:Food){
                         </div>
                         </dialog>
                     <button className="btn btn-primary" onClick={()=>handleDeleteFood(_id)}>delete</button>
+                    <Toast 
+                        message={showToast.message} 
+                        show={showToast.show} 
+                        onClose={()=> setShowtoast({show:false,message:""})}
+                    />
                 </div>
             </div>
         </div>
