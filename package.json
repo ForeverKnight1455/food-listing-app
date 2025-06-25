@@ -26,6 +26,7 @@
   "homepage": "https://github.com/ForeverKnight1455/food-listing-app#readme",
   "description": "",
   "devDependencies": {
+    "@types/react-dom": "^19.1.6",
     "concurrently": "^9.2.0",
     "cross-env": "^7.0.3"
   }

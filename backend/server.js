@@ -8,19 +8,20 @@ import path from "path"
 const app = express();
 app.use(express.json());
 const __dirname = path.resolve()//return the project directory path 
+console.log("dirpath:",__dirname);
 app.use('/api/products', productrouter);
 
-if(process.env.NODE_ENV === "production"){
+if(process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
   });
 }
-
-app.get('/', (req, res) => {
-  res.send('Welcome to the Product API');
-});
-
+else {
+  app.get("/", (req, res) => {
+    res.send("API is running...");
+  });
+}
 console.log("Server is running in", process.env.NODE_ENV, "mode");
 
 app.listen(process.env.PORT, () => {
