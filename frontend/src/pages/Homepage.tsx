@@ -39,10 +39,9 @@ const Homepage = () => {
       }
     };
     fetchData();
-  }, [fetchFood]);
-  useEffect(() => {
     setEmpty(isEmpty.current);
-  }, [foods]);
+  }, [fetchFood]);
+  
   return (
     <>
       <div className='p-10 bg-grey border-2 rounded-xl flex-wrap flex gap-2 h-11/12 w-full justify-center items-center overflow-auto'>
